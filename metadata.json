@@ -1,0 +1,6 @@
+{
+  "name": "Samrakshan Dhara Foundation | The Living World",
+  "description": "Official cinematic website for Samrakshan Dhara Foundation (SDF) — Nature, Humanity, Compassion. Legal Section 8 Non-Profit Organisation based in Dhanbad, Jharkhand.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
