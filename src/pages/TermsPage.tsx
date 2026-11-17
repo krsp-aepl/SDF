@@ -59,7 +59,7 @@ export const TermsPage: React.FC = () => {
               The name "SAMRAKSHAN DHARA FOUNDATION", the official emblem, typography lockups, and editorial content are the exclusive intellectual property of the Foundation. Unauthorized reproduction, modification, or commercial exploitation is strictly prohibited without prior written consent.
             </p>
             <p className="text-xs text-[#E6EEE7]/70">
-              Photographs presented in the Vision Gallery and initiative showcases are illustrative references demonstrating planned causes, with rights held by their respective creators.
+              Photographs presented in initiative showcases are illustrative references demonstrating planned causes, with rights held by their respective creators.
             </p>
           </section>
 

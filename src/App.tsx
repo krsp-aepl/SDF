@@ -7,7 +7,6 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { InitiativesPage } from './pages/InitiativesPage';
-import { GalleryPage } from './pages/GalleryPage';
 import { GetInvolvedPage } from './pages/GetInvolvedPage';
 import { ContactPage } from './pages/ContactPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
@@ -26,7 +25,7 @@ export default function App() {
             <Route path="/vision" element={<Navigate to="/about" replace />} />
             <Route path="/initiatives" element={<InitiativesPage />} />
             <Route path="/initiatives/:slug" element={<InitiativesPage />} />
-            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/gallery" element={<Navigate to="/" replace />} />
             <Route path="/get-involved" element={<GetInvolvedPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />

@@ -87,17 +87,6 @@ export const Navbar: React.FC = () => {
             </Link>
 
             <Link
-              to="/gallery"
-              className={`text-sm font-medium tracking-wide transition-colors ${
-                isActive('/gallery')
-                  ? 'text-[#49CEC3] font-semibold'
-                  : 'text-[#F8F7EF]/90 hover:text-[#49CEC3]'
-              }`}
-            >
-              Gallery
-            </Link>
-
-            <Link
               to="/get-involved"
               className={`text-sm font-medium tracking-wide transition-colors ${
                 isActive('/get-involved')
@@ -175,15 +164,6 @@ export const Navbar: React.FC = () => {
               }`}
             >
               Our Initiatives
-            </Link>
-
-            <Link
-              to="/gallery"
-              className={`text-base font-medium py-2 border-b border-white/10 ${
-                isActive('/gallery') ? 'text-[#49CEC3]' : 'text-white'
-              }`}
-            >
-              Vision Gallery
             </Link>
 
             <Link
