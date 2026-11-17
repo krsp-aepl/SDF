@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Mail, 
+  Mail,
+  Phone,
   MapPin, 
   Instagram, 
   Copy, 
@@ -14,6 +15,7 @@ import { SDFLogo } from '../components/SDFLogo';
 import { SDF_INFO } from '../data/foundationData';
 import { CinematicVintageTelephone } from '../components/CinematicVintageTelephone';
 import { WarmPaperContactForm } from '../components/WarmPaperContactForm';
+import contactBackdrop from '../assets/images/contact_backdrop_1794202559162.jpg';
 
 export const ContactPage: React.FC = () => {
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -37,9 +39,9 @@ export const ContactPage: React.FC = () => {
 
       {/* High-Fidelity Cinematic Backdrop Layer (Natural Sunlight & Shadows) */}
       <div 
-        className="absolute inset-0 opacity-40 mix-blend-soft-light pointer-events-none bg-cover bg-center"
+        className="absolute inset-0 opacity-75 pointer-events-none bg-cover bg-center"
         style={{
-          backgroundImage: 'url(/src/assets/images/contact_backdrop_1794202559162.jpg)',
+          backgroundImage: `linear-gradient(90deg, rgba(3,32,35,0.58), rgba(4,35,34,0.35) 45%, rgba(3,27,30,0.52)), url(${contactBackdrop})`,
         }}
       />
 
@@ -97,14 +99,14 @@ export const ContactPage: React.FC = () => {
           CENTRE: Emotional Headline & Official Registry Info
           RIGHT: Warm-Ivory Stationery Contact Form
           ========================================================================= */}
-      <main className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 pt-4 sm:pt-8 pb-16 lg:pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+      <main className="relative z-20 max-w-[1480px] mx-auto px-5 sm:px-8 lg:px-10 xl:px-14 pt-8 sm:pt-10 pb-16 lg:pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 xl:gap-9 items-center">
 
           {/* ===================================================================
               ZONE 1 — LEFT: CINEMATIC VINTAGE TELEPHONE (4 cols on desktop)
               Enters smoothly from above, swings gently on cord, emits sound waves
               =================================================================== */}
-          <div className="lg:col-span-4 flex flex-col items-center justify-center order-2 lg:order-1 pt-2 lg:pt-0">
+          <div className="lg:col-span-3 flex flex-col items-center justify-center order-2 lg:order-1 pt-2 lg:pt-0">
             <CinematicVintageTelephone />
           </div>
 
@@ -122,7 +124,7 @@ export const ContactPage: React.FC = () => {
             </div>
 
             {/* Main Headline */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-[44px] xl:text-[48px] font-normal tracking-tight text-[#F8F7EF] leading-[1.12]">
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-[37px] xl:text-[46px] font-normal tracking-tight text-[#F8F7EF] leading-[1.12]">
               Every Call for <br className="hidden sm:inline" />
               Care Deserves <br className="hidden sm:inline" />
               <span className="font-serif italic text-[#D5AD65] tracking-normal font-medium">
@@ -172,6 +174,17 @@ export const ContactPage: React.FC = () => {
                       Copied to clipboard!
                     </span>
                   )}
+                </div>
+              </div>
+
+              {/* Direct contact call link; the device decides whether it can place the call. */}
+              <div className="flex items-start gap-3.5 group">
+                <div className="w-10 h-10 rounded-full border border-[#D5AD65]/40 bg-[#05282E]/90 flex items-center justify-center text-[#D5AD65] shrink-0 mt-0.5">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="block font-mono text-[10px] uppercase tracking-wider text-[#D5AD65]/80">CALL OUR FOUNDATION</span>
+                  <a href="tel:+919241826243" className="inline-block mt-0.5 text-xs sm:text-sm text-[#F8F7EF] hover:text-[#49CEC3] font-medium transition-colors" aria-label="Call Samrakshan Dhara Foundation at 9241826243">+91 92418 26243</a>
                 </div>
               </div>
 
@@ -225,7 +238,7 @@ export const ContactPage: React.FC = () => {
               ZONE 3 — RIGHT: WARM-IVORY STATIONERY FORM (4 cols on desktop)
               Sophisticated paper surface, olive leaf sprig & paperclip
               =================================================================== */}
-          <div className="lg:col-span-4 flex justify-center order-3">
+          <div className="lg:col-span-5 flex justify-center order-3 w-full">
             <WarmPaperContactForm />
           </div>
 

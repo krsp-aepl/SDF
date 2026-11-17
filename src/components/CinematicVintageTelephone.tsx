@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { Volume2, VolumeX, PhoneCall } from 'lucide-react';
 
 interface CinematicVintageTelephoneProps {
   onRingComplete?: () => void;
@@ -109,13 +109,7 @@ export const CinematicVintageTelephone: React.FC<CinematicVintageTelephoneProps>
   };
 
   return (
-    <div className="relative w-full max-w-[360px] sm:max-w-[420px] lg:max-w-[460px] flex flex-col items-center select-none">
-      {/* Upper Ceiling Mount Bracket for Coiled Cord */}
-      <div className="relative z-20 flex flex-col items-center">
-        <div className="w-8 h-2.5 rounded-full bg-gradient-to-r from-[#9E7A2A] via-[#D5AD65] to-[#9E7A2A] shadow-md border border-[#D5AD65]/50" />
-        <div className="w-1.5 h-3 bg-gradient-to-b from-[#D5AD65] to-[#27464A]" />
-      </div>
-
+    <div className="relative w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[340px] flex flex-col items-center select-none">
       {/* =======================================================================
           ANIMATED SUSPENDED TELEPHONE RECEIVER ASSEMBLY
           ======================================================================= */}
@@ -140,46 +134,6 @@ export const CinematicVintageTelephone: React.FC<CinematicVintageTelephoneProps>
         }}
         aria-label="Interactive vintage telephone receiver"
       >
-        {/* Realistic Coiled Cord SVG extending downwards */}
-        <div className="w-full flex justify-center -mb-2 relative z-10">
-          <svg
-            className="w-8 h-28 sm:h-36 overflow-visible text-[#132C28] drop-shadow-md"
-            viewBox="0 0 24 120"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3.2"
-            strokeLinecap="round"
-          >
-            {/* Realistic spiraling coiled telephone wire */}
-            <path
-              d="M 12 0 
-                 C 20 6, 20 14, 12 18 
-                 C 4 22, 4 30, 12 34 
-                 C 20 38, 20 46, 12 50 
-                 C 4 54, 4 62, 12 66 
-                 C 20 70, 20 78, 12 82 
-                 C 4 86, 4 94, 12 98 
-                 C 20 102, 20 110, 12 114
-                 L 12 120"
-              stroke="#1A3A35"
-              strokeWidth="4"
-            />
-            {/* Subtle highlight sheen on the cord coils */}
-            <path
-              d="M 12 0 
-                 C 19 6, 19 14, 12 18 
-                 C 5 22, 5 30, 12 34 
-                 C 19 38, 19 46, 12 50 
-                 C 5 54, 5 62, 12 66 
-                 C 19 70, 19 78, 12 82 
-                 C 5 86, 5 94, 12 98 
-                 C 19 102, 19 110, 12 114"
-              stroke="rgba(73, 206, 195, 0.3)"
-              strokeWidth="1.2"
-            />
-          </svg>
-        </div>
-
         {/* =====================================================================
             VINTAGE HANDSET CONTAINER & ART-DIRECTED SHADOW
             ===================================================================== */}
@@ -188,16 +142,11 @@ export const CinematicVintageTelephone: React.FC<CinematicVintageTelephoneProps>
           <div className="absolute inset-x-6 bottom-4 h-5/6 bg-black/60 rounded-full blur-2xl -rotate-12 pointer-events-none transform translate-y-4" />
 
           {/* Deep Emerald Vintage Receiver Image */}
-          <div className="relative w-48 sm:w-56 lg:w-64 h-auto aspect-[3/4] overflow-visible">
+          <div className="relative w-[240px] sm:w-[270px] lg:w-[310px] max-w-[325px] h-[360px] sm:h-[425px] lg:h-[470px] overflow-visible">
             <img
-              src="/src/assets/images/vintage_telephone_1794202559614.jpg"
+              src="/telephone_isolated.png"
               alt="Vintage Dark Emerald Telephone Receiver"
-              className="w-full h-full object-contain filter contrast-105 brightness-100 group-hover:brightness-105 transition-all duration-300"
-              style={{
-                // Soft radial mask to blend seamlessly into emerald atmosphere
-                maskImage: 'radial-gradient(ellipse at 50% 55%, black 50%, rgba(0,0,0,0.85) 65%, transparent 85%)',
-                WebkitMaskImage: 'radial-gradient(ellipse at 50% 55%, black 50%, rgba(0,0,0,0.85) 65%, transparent 85%)',
-              }}
+              className="w-full h-full object-contain object-center drop-shadow-[0_24px_36px_rgba(0,0,0,0.5)] group-hover:brightness-110 transition-all duration-300"
             />
 
             {/* Subtle golden ambient reflection sheen */}
@@ -303,15 +252,15 @@ export const CinematicVintageTelephone: React.FC<CinematicVintageTelephoneProps>
         </button>
 
         {/* Small subtle tap-to-ring prompt */}
-        <button
-          type="button"
-          onClick={handleReceiverClick}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-[11px] font-mono text-[#49CEC3] border border-[#49CEC3]/25 transition-colors cursor-pointer"
-          title="Click to ring the receiver"
+        <a
+          href="tel:+919241826243"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-[#D5AD65]/10 hover:bg-[#D5AD65]/20 text-[11px] font-mono text-[#F1D9A3] border border-[#D5AD65]/40 transition-colors cursor-pointer"
+          title="Call SDF at +91 9241826243"
+          aria-label="Tap to Ring: call SDF at +91 9241826243"
         >
-          <Sparkles className="w-3 h-3 text-[#D5AD65]" />
-          <span>Tap to Ring</span>
-        </button>
+          <PhoneCall className="w-3 h-3 text-[#D5AD65]" />
+          <span>Tap to Ring · Call</span>
+        </a>
       </div>
 
       {userInteracted && !soundEnabled && (
