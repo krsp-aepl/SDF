@@ -1,201 +1,181 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { 
-  Users, 
-  HandHeart, 
-  Building, 
-  Megaphone, 
-  Heart, 
-  ChevronDown, 
-  Mail, 
-  CheckCircle2, 
-  ShieldCheck, 
-  ArrowRight,
-  Info,
-  Sparkles
+import {
+  Users, HandHeart, Building, Megaphone, Heart, Mail, CheckCircle2,
+  ArrowRight, Info, ChevronLeft, ChevronRight, X, Sparkles
 } from 'lucide-react';
 import { SDF_INFO } from '../data/foundationData';
 
-type PanelKey = 'volunteer' | 'community' | 'partner' | 'awareness' | 'donation' | null;
+type PanelKey = 'volunteer' | 'community' | 'partner' | 'awareness' | 'donation';
+
+const pathways = [
+  { id: 'community' as PanelKey, name: 'Community Participation', caption: 'Join local action and community initiatives', image: '/images/living_world_collage.png', icon: HandHeart, position: -2 },
+  { id: 'partner' as PanelKey, name: 'Partnership Enquiries', caption: 'Collaborate to create meaningful change', image: '/images/commitment_hands_promise.png', icon: Building, position: -1 },
+  { id: 'volunteer' as PanelKey, name: 'Volunteer Network', caption: 'Contribute your time, skills and energy', image: '/images/samrakshan_living_scene.png', icon: Users, position: 0 },
+  { id: 'awareness' as PanelKey, name: 'Awareness Collaboration', caption: 'Spread knowledge and inspire action', image: '/images/women_empowerment.jpg', icon: Megaphone, position: 1 },
+  { id: 'donation' as PanelKey, name: 'Future Donation Enquiries', caption: 'Express interest in supporting future initiatives', image: '/images/card_commitment_visual.png', icon: Heart, position: 2 },
+];
 
 export const GetInvolvedPage: React.FC = () => {
   const location = useLocation();
   const isFromDharaStream = Boolean(location.state?.fromDharaStream);
-
   const [activePanel, setActivePanel] = useState<PanelKey>('volunteer');
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [donationFrequency, setDonationFrequency] = useState<'one-time' | 'monthly' | 'yearly'>('one-time');
   const [formSubmitted, setFormSubmitted] = useState(false);
-
-  // Volunteer Interest State
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [interestArea, setInterestArea] = useState('Nature & Plantation');
+  const [interestArea, setInterestArea] = useState('Nature & Plantation Guardianship');
   const [notes, setNotes] = useState('');
+
+  const selectedIndex = pathways.findIndex(item => item.id === activePanel);
+  const changeSelection = (key: PanelKey) => {
+    if (key === activePanel) {
+      setDetailsOpen(true);
+      requestAnimationFrame(() => document.getElementById('sdf-pathway-details')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    } else {
+      setActivePanel(key);
+      setDetailsOpen(false);
+      setFormSubmitted(false);
+    }
+  };
+  const rotateSelection = (step: number) => {
+    setActivePanel(pathways[(selectedIndex + step + pathways.length) % pathways.length].id);
+    setDetailsOpen(false);
+  };
+  const revealDetails = () => {
+    setDetailsOpen(true);
+    requestAnimationFrame(() => document.getElementById('sdf-pathway-details')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
 
   const handleInterestSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Prepare standard mailto trigger with prefilled details
     const subject = encodeURIComponent(`[SDF Involvement Enquiry] - ${interestArea} - ${fullName}`);
     const body = encodeURIComponent(
-      `Hello Samrakshan Dhara Foundation,\n\nName: ${fullName}\nEmail: ${email}\nInterest: ${interestArea}\nMessage:\n${notes}\n\nSent from SDF Web Portal.`
+      `Hello Samrakshan Dhara Foundation,\n\nName: ${fullName}\nEmail: ${email}\nSelected Pathway: ${pathways[selectedIndex].name}\nInterest: ${interestArea}\nMessage:\n${notes}\n\nSent from SDF Web Portal.`
     );
     window.location.href = `mailto:${SDF_INFO.email}?subject=${subject}&body=${body}`;
     setFormSubmitted(true);
   };
 
   return (
-    <div className="relative bg-[#073B43] text-[#F8F7EF]">
-      {/* Header with Continuation of "The Endless Dhara" Stream */}
-      <section className="relative pt-32 pb-20 bg-gradient-to-b from-[#041F23] via-[#073B43] to-[#05282E] overflow-hidden text-center">
-        
-        {/* =====================================================================
-            CONTINUATION OF THE ENDLESS DHARA STREAM
-            Enters seamlessly from the top matching the homepage closing trajectory,
-            undulating softly and framing the destination heading with fluid grace.
-            ===================================================================== */}
-        <div
-          className="absolute inset-0 pointer-events-none overflow-hidden z-0"
-          aria-hidden="true"
-        >
-          <svg
-            className="w-full h-full"
-            viewBox="0 0 1440 400"
-            preserveAspectRatio="none"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <linearGradient id="dhara-arrival-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FFF4D0" stopOpacity="0.9" />
-                <stop offset="25%" stopColor="#D5AD65" stopOpacity="0.85" />
-                <stop offset="65%" stopColor="#49CEC3" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#087F78" stopOpacity="0.3" />
-              </linearGradient>
-
-              <filter id="dhara-arrival-glow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="6" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-              </filter>
-            </defs>
-
-            {/* Glowing Arrival Stream Arc */}
-            <path
-              d="M 720 0 C 720 75, 480 130, 260 90 C 80 60, -40 220, -60 320"
-              stroke="url(#dhara-arrival-grad)"
-              strokeWidth="5"
-              strokeLinecap="round"
-              opacity="0.35"
-              filter="url(#dhara-arrival-glow)"
-            />
-
-            {/* Living Stream Continuation Line */}
-            <path
-              d="M 720 0 C 720 75, 480 130, 260 90 C 80 60, -40 220, -60 320"
-              stroke="url(#dhara-arrival-grad)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              className="animate-dhara-stream"
-            />
-
-            {/* Companion Eastern Wave */}
-            <path
-              d="M 720 0 C 720 85, 960 140, 1180 100 C 1360 70, 1480 230, 1500 330"
-              stroke="url(#dhara-arrival-grad)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              className="animate-dhara-stream"
-              opacity="0.6"
-            />
-
-            {/* Arrival focal sparkle node */}
-            <circle cx="720" cy="18" r="4.5" fill="#FFF4D0" opacity="0.9" />
-          </svg>
-        </div>
-
-        <div className="max-w-4xl mx-auto px-6 sm:px-8 relative z-10 space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#087F78]/50 border border-[#49CEC3]/30 backdrop-blur-md">
-            <HandHeart className="w-4 h-4 text-[#49CEC3]" />
-            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#D5AD65]">
-              Participate With Purpose
-            </span>
-          </div>
-
-          {/* Fluid Heading Reveal: Animated with fluid motion on arrival from Dhara stream */}
-          <h1
-            className={`font-serif text-4xl sm:text-6xl font-medium tracking-tight text-[#F8F7EF] ${
-              isFromDharaStream ? 'animate-fluid-heading' : ''
-            }`}
-          >
-            Get Involved
+    <main className="sdf-involved relative overflow-hidden bg-[#052D32] text-[#F8F7EF]">
+      <style>{`
+        .sdf-involved{background:radial-gradient(ellipse at 54% 20%,#126564 0%,#073B43 40%,#04262D 80%);}
+        .sdf-layered-stage{perspective:1400px;isolation:isolate;}
+        .sdf-layer-card{position:absolute;left:50%;top:35px;width:288px;height:402px;margin-left:-144px;transform-style:preserve-3d;transition:transform 720ms cubic-bezier(.22,1,.36,1),opacity 600ms,filter 600ms;will-change:transform;cursor:pointer;}
+        .sdf-layer-card:focus-visible{outline:3px solid #73D4C3;outline-offset:7px;}
+        .sdf-layer-card .sdf-card-surface{height:100%;overflow:hidden;background:#073B43;border-radius:23px;border:1px solid rgba(116,217,203,.6);box-shadow:0 27px 46px rgba(0,8,12,.45),0 0 25px rgba(30,180,155,.14);transition:border-color 450ms,box-shadow 450ms;}
+        .sdf-layer-card[data-active="true"] .sdf-card-surface{border-color:#94E0CE;box-shadow:0 38px 65px rgba(0,8,12,.55),0 0 35px rgba(88,215,191,.28);}
+        .sdf-layer-card img{height:100%;width:100%;object-fit:cover;filter:saturate(.9);}
+        .sdf-layer-card .sdf-card-tint{position:absolute;inset:0;background:linear-gradient(180deg,transparent 10%,rgba(3,39,42,.18) 40%,#03282e 76%,#063f42 100%);}
+        .sdf-layer-card[data-active="false"] .sdf-card-surface{filter:brightness(.78);}
+        .sdf-layer-card .sdf-card-copy{position:absolute;bottom:0;left:0;right:0;padding:24px 20px 26px;text-align:center;}
+        .sdf-layer-card .sdf-card-copy h3{font-family:Georgia,serif;font-size:27px;line-height:1.08;color:#f8f7ef;margin:10px 0;}
+        .sdf-layer-card[data-active="true"] .sdf-card-copy h3{font-size:29px;}
+        .sdf-orb-halo{background:radial-gradient(ellipse at center,rgba(49,174,163,.14),transparent 70%);}
+        @media(max-width:767px){
+          .sdf-layered-stage{height:auto!important;perspective:none;}
+          .sdf-layer-card{position:relative;left:auto;top:auto;margin:0 auto 0;width:min(76vw,318px);height:400px;transform:none!important;opacity:1!important;filter:none!important;display:none;}
+          .sdf-layer-card[data-active="true"]{display:block;}
+          .sdf-layer-card .sdf-card-surface{filter:none!important;}
+        }
+        @media(prefers-reduced-motion:reduce){
+          .sdf-layer-card{transition:none;}
+          .sdf-involved *{scroll-behavior:auto!important;}
+        }
+      `}</style>
+      <section className="relative overflow-hidden pt-24 sm:pt-28 pb-10 text-center">
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none opacity-40"
+             style={{background:'radial-gradient(ellipse at 80% 28%, rgba(78,209,190,.22), transparent 35%),radial-gradient(ellipse at 12% 65%, rgba(12,109,110,.3), transparent 42%)'}} />
+        <div className="absolute inset-0 pointer-events-none opacity-15" aria-hidden="true"
+             style={{backgroundImage:'url(/images/dhara_river_scene.png)',backgroundSize:'cover',backgroundPosition:'center',maskImage:'linear-gradient(transparent,#000 50%,transparent)',WebkitMaskImage:'linear-gradient(transparent,#000 50%,transparent)'}} />
+        <div className="relative z-10 px-6">
+          <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[.29em] font-semibold text-[#D5AD65]">
+            <Sparkles size={14} /> Get Involved
+          </span>
+          <h1 className={`font-serif text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.12] font-medium mt-4 text-[#F8F7EF] ${isFromDharaStream ? 'animate-fluid-heading' : ''}`}>
+            Be a Part of <span className="block sm:inline text-[#E6DFC8]">SAMRAKSHAN DHARA</span>
           </h1>
-
-          <p
-            className={`text-base sm:text-xl text-[#E6EEE7]/85 font-light max-w-2xl mx-auto leading-relaxed ${
-              isFromDharaStream ? 'animate-fluid-heading' : ''
-            }`}
-            style={isFromDharaStream ? { animationDelay: '120ms' } : {}}
-          >
-            Meaningful conservation and animal welfare flourish when individuals contribute their time, skills, and empathy. Discover the pathways to join our circle.
+          <p className="mt-5 max-w-2xl mx-auto text-sm sm:text-lg font-light text-[#D5E8E3]/90 leading-relaxed">
+            Your time. Your ideas. Your compassion. Together, they can make a difference.
           </p>
-
-          <div className="pt-2 text-xs text-[#D5AD65] tracking-wider uppercase flex items-center justify-center gap-2 font-mono">
-            <ShieldCheck className="w-4 h-4" />
-            <span>Honest & Transparent Engagement · Preparatory Volunteer Network</span>
-          </div>
         </div>
       </section>
 
-      {/* Interactive Pathways Navigation & Detailed Reveal Panels */}
-      <section className="py-16 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          
-          {/* Pathway Selector Sidebar (4 cols) */}
-          <div className="lg:col-span-4 space-y-3">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#D5AD65] px-2 mb-2">
-              Involvement Opportunities
-            </h3>
-
-            {[
-              { id: 'volunteer', label: 'Volunteer Network', icon: Users, desc: 'Grassroots sapling care & animal aid' },
-              { id: 'community', label: 'Community Participation', icon: HandHeart, desc: 'Neighborhood clean zones & events' },
-              { id: 'partner', label: 'Partnership Enquiries', icon: Building, desc: 'Institutional & recycling coordination' },
-              { id: 'awareness', label: 'Awareness Collaboration', icon: Megaphone, desc: 'Schools, colleges & digital outreach' },
-              { id: 'donation', label: 'Future Donation Enquiries', icon: Heart, desc: 'Statutory registration & future funds' },
-            ].map((pathway) => {
-              const Icon = pathway.icon;
-              const isActive = activePanel === pathway.id;
-
-              return (
-                <button
-                  key={pathway.id}
-                  type="button"
-                  onClick={() => setActivePanel(pathway.id as PanelKey)}
-                  className={`w-full text-left p-4 rounded-2xl transition-all duration-300 border flex items-center justify-between cursor-pointer ${
-                    isActive
-                      ? 'bg-[#087F78] border-[#49CEC3] shadow-lg shadow-[#087F78]/40 translate-x-1 text-white'
-                      : 'bg-[#05282E]/80 hover:bg-[#073B43] border-white/10 text-[#E6EEE7]'
-                  }`}
-                  aria-pressed={isActive}
-                >
-                  <div className="flex items-center gap-3.5 min-w-0">
-                    <div className={`p-2.5 rounded-xl ${isActive ? 'bg-white/20 text-white' : 'bg-[#087F78]/30 text-[#49CEC3]'}`}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold truncate">{pathway.label}</p>
-                      <p className="text-xs text-white/60 truncate mt-0.5">{pathway.desc}</p>
-                    </div>
+      <section aria-label="Explore participation opportunities" className="relative max-w-[1320px] mx-auto px-2 sm:px-6 pb-16">
+        <div aria-hidden="true" className="absolute inset-0 sdf-orb-halo pointer-events-none"/>
+        <div className="sdf-layered-stage relative h-[490px] md:h-[510px]">
+          {pathways.map((item, index) => {
+            const Icon = item.icon;
+            const rawOffset = (index - selectedIndex + pathways.length) % pathways.length;
+            const offset = rawOffset > 2 ? rawOffset - pathways.length : rawOffset;
+            const abs = Math.abs(offset);
+            const isActive = offset === 0;
+            const x = offset * 205;
+            const transform = `translate3d(${x}px,${abs * 26}px,${-abs * 90}px) rotateY(${-offset * 11}deg) rotateZ(${offset * 2}deg) scale(${isActive ? 1.13 : abs === 1 ? .98 : .86})`;
+            return (
+              <button
+                type="button"
+                key={item.id}
+                data-active={isActive ? 'true' : 'false'}
+                className="sdf-layer-card text-left"
+                style={{transform, zIndex: 15 - abs, opacity: abs === 2 ? .83 : 1}}
+                onClick={() => changeSelection(item.id)}
+                aria-label={`${item.name}${isActive ? ', selected, open details' : ', select pathway'}`}
+                aria-pressed={isActive}
+              >
+                <div className="sdf-card-surface relative">
+                  <img src={item.image} alt="" loading={abs === 2 ? 'lazy' : 'eager'} />
+                  <div className="sdf-card-tint"/>
+                  <div className="sdf-card-copy">
+                    <Icon className="mx-auto text-[#A5DCCD]" size={33} strokeWidth={1.5}/>
+                    <h3>{item.name}</h3>
+                    <p className="text-[12px] text-[#E2EFE9]/90 leading-relaxed min-h-[38px]">{item.caption}</p>
+                    {isActive ? (
+                      <span className="inline-flex mt-4 px-5 py-2.5 rounded-full bg-[#75CBB8] text-[#053A3A] text-sm font-semibold gap-2 items-center">
+                        Explore &amp; Join <ArrowRight size={15}/>
+                      </span>
+                    ) : (
+                      <span className="inline-flex justify-center items-center rounded-full w-8 h-8 mt-3 border border-[#9BD6C9]/60 text-[#BCE1D9]"><ArrowRight size={16}/></span>
+                    )}
                   </div>
-                  <ChevronDown className={`w-4 h-4 transition-transform ${isActive ? '-rotate-90 text-[#49CEC3]' : 'text-white/40'}`} />
-                </button>
-              );
-            })}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        <div className="relative z-20 flex justify-center items-center gap-5 pt-2">
+          <button type="button" onClick={() => rotateSelection(-1)} aria-label="Previous opportunity"
+                  className="w-11 h-11 rounded-full border border-[#7FCBC0]/50 hover:bg-[#1B6B66] flex items-center justify-center transition-colors">
+            <ChevronLeft size={22}/>
+          </button>
+          <div className="flex items-center gap-2" aria-label="Opportunity position">
+            {pathways.map(item => (
+              <button type="button" key={item.id} onClick={() => changeSelection(item.id)}
+                      className={`rounded-full transition-all h-2.5 ${activePanel === item.id ? 'w-7 bg-[#8FDBCA]' : 'w-2.5 bg-[#9EBFBA]/40 hover:bg-[#9EBFBA]'}`}
+                      aria-label={`Select ${item.name}`} aria-pressed={activePanel === item.id}/>
+            ))}
           </div>
+          <button type="button" onClick={() => rotateSelection(1)} aria-label="Next opportunity"
+                  className="w-11 h-11 rounded-full border border-[#7FCBC0]/50 hover:bg-[#1B6B66] flex items-center justify-center transition-colors">
+            <ChevronRight size={22}/>
+          </button>
+        </div>
+        <p className="text-center text-xs text-[#B9D8D3]/65 mt-4">Choose a panel to bring it forward. Select the centre panel to explore and join.</p>
+        <div className="flex justify-center mt-5">
+          <button type="button" onClick={revealDetails}
+                  className="rounded-full border border-[#77BDB2]/50 bg-[#087F78] hover:bg-[#159F8E] text-white font-medium px-7 py-3 text-sm transition-colors flex items-center gap-2">
+            Explore {pathways[selectedIndex].name} <ArrowRight size={17}/>
+          </button>
+        </div>
+      </section>
 
-          {/* Detailed Content Panel (8 cols) */}
-          <div className="lg:col-span-8">
-            <div className="p-8 sm:p-12 rounded-3xl bg-[#05282E] border border-[#49CEC3]/25 shadow-2xl space-y-8">
-              
+      {detailsOpen && (
+        <section id="sdf-pathway-details" className="scroll-mt-28 px-4 sm:px-8 pb-24 max-w-4xl mx-auto">
+          <div className="relative rounded-[28px] p-6 sm:p-10 bg-[#042B31]/95 border border-[#67BEAE]/35 shadow-[0_30px_80px_rgba(0,0,0,.3)] space-y-7">
+            <button type="button" onClick={() => setDetailsOpen(false)} aria-label="Close details"
+                    className="absolute top-5 right-5 rounded-full border border-white/20 p-2 hover:bg-white/10"><X size={18}/></button>
               {/* PANEL 1: VOLUNTEER */}
               {activePanel === 'volunteer' && (
                 <div className="space-y-6">
@@ -445,12 +425,9 @@ export const GetInvolvedPage: React.FC = () => {
                   </button>
                 </form>
               </div>
-
-            </div>
           </div>
-
-        </div>
-      </section>
-    </div>
+        </section>
+      )}
+    </main>
   );
 };
