@@ -112,10 +112,10 @@ export const Navbar: React.FC = () => {
           {/* Highlighted CTA Button */}
           <div className="hidden lg:flex items-center">
             <Link
-              to="/get-involved"
+              to="/donate"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#087F78] to-[#28A77B] hover:from-[#28A77B] hover:to-[#49CEC3] text-[#F8F7EF] hover:text-[#073B43] text-sm font-semibold transition-all duration-300 shadow-md shadow-[#087F78]/30 group"
             >
-              <span>Join Our Mission</span>
+              <span>Donate Now</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
@@ -186,10 +186,10 @@ export const Navbar: React.FC = () => {
 
             <div className="pt-4">
               <Link
-                to="/get-involved"
+                to="/donate"
                 className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full bg-gradient-to-r from-[#087F78] to-[#28A77B] text-white font-medium shadow-lg"
               >
-                <span>Join Our Mission</span>
+                <span>Donate Now</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

@@ -8,6 +8,7 @@ import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { InitiativesPage } from './pages/InitiativesPage';
 import { GetInvolvedPage } from './pages/GetInvolvedPage';
+import { DonatePage } from './pages/DonatePage';
 import { ContactPage } from './pages/ContactPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="/initiatives/:slug" element={<InitiativesPage />} />
             <Route path="/gallery" element={<Navigate to="/" replace />} />
             <Route path="/get-involved" element={<GetInvolvedPage />} />
+            <Route path="/donate" element={<DonatePage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsPage />} />
