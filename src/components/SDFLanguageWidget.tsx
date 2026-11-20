@@ -9,7 +9,7 @@ import { Globe2, X, Languages } from 'lucide-react';
  * Automatic translations are NOT human reviewed; verify legal/donation wording.
  */
 const SCRIPT_ID = 'sdf-gtranslate-widget-script';
-const LANGUAGES = ['en', 'hi', 'bn', 'or', 'ta', 'te', 'mr', 'gu', 'pa', 'ur', 'kn', 'ml'];
+const LANGUAGES = ['en', 'hi', 'bn'];
 
 declare global {
   interface Window {
@@ -120,7 +120,7 @@ export const SDFLanguageWidget: React.FC = () => {
         <div className="sdf-language-title"><Languages size={16} style={{display:'inline-block',verticalAlign:'-3px',marginRight:7}}/>Select Language</div>
         <div className="sdf-gtranslate-wrapper" />
         {scriptFailed && <p role="alert" className="sdf-language-note">Translation service could not load. Please check your connection.</p>}
-        <p className="sdf-language-note">Automatic translation · 12 languages. Refer to the original English text for official donation and legal details.</p>
+        <p className="sdf-language-note">English (default) · हिन्दी · বাংলা. Switch languages anytime, including back to English. Automatic translations: refer to the original English text for official donation and legal details.</p>
       </section>
     </div>, target
   );
