@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Globe2, X, Languages } from 'lucide-react';
 
 /**
@@ -25,6 +26,56 @@ declare global {
 export const SDFLanguageWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scriptFailed, setScriptFailed] = useState(false);
+  const [target, setTarget] = useState<HTMLElement | null>(null);
+
+  // Add a tiny mount point INSIDE the existing navbar, without replacing Navbar.tsx.
+  // Desktop: after Donate Now CTA, at the far-right edge. Mobile: after the menu icon.
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 1024px)');
+    const host = document.createElement('div');
+    host.className = 'sdf-language-navbar-host';
+    host.setAttribute('translate', 'no');
+    let mounted = true;
+    let animationFrame = 0;
+
+    const position = () => {
+      if (!mounted) return;
+      const nav = document.querySelector('header nav[aria-label="Main Navigation"]');
+      if (!nav) {
+        if (host.parentElement) host.remove();
+        setTarget(current => current === null ? current : null);
+        return;
+      }
+      const parts = Array.from(nav.children) as HTMLElement[];
+      const destination = media.matches
+        ? parts.find(el => el.classList.contains('hidden') && el.classList.contains('lg:flex') && !!el.querySelector('a.rounded-full'))
+        : parts.find(el => el.classList.contains('lg:hidden') && !!el.querySelector('button'));
+      if (!destination) return;
+      if (host.parentElement !== destination || destination.lastElementChild !== host) {
+        destination.appendChild(host);
+      }
+      setTarget(current => current === host ? current : host);
+    };
+
+    const schedule = () => {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(position);
+    };
+    position();
+    // Navbar can disappear/reappear on route changes; reconnect when needed.
+    const observer = new MutationObserver(schedule);
+    observer.observe(document.getElementById('root') || document.body, {childList:true,subtree:true});
+    media.addEventListener('change', schedule);
+    window.addEventListener('popstate', schedule);
+    return () => {
+      mounted = false;
+      cancelAnimationFrame(animationFrame);
+      observer.disconnect();
+      media.removeEventListener('change', schedule);
+      window.removeEventListener('popstate', schedule);
+      host.remove();
+    };
+  }, []);
 
   useEffect(() => {
     window.gtranslateSettings = {
@@ -34,7 +85,6 @@ export const SDFLanguageWidget: React.FC = () => {
       languages: LANGUAGES,
       wrapper_selector: '.sdf-gtranslate-wrapper',
     };
-
     if (document.getElementById(SCRIPT_ID)) return;
     const script = document.createElement('script');
     script.id = SCRIPT_ID;
@@ -44,36 +94,34 @@ export const SDFLanguageWidget: React.FC = () => {
     document.head.appendChild(script);
   }, []);
 
-  return (
-    <div className="sdf-language-float" translate="no">
+  if (!target) return null;
+  return createPortal(
+    <div className="sdf-language-nav" translate="no">
       <style>{`
-        .sdf-language-float { position:fixed; right:14px; top:40%; transform:translateY(-50%); z-index:999; font-family:inherit; }
-        .sdf-language-toggle { display:flex; align-items:center; gap:7px; background:#0B5652; color:#FFF8EB; border:1px solid #C5A76C; box-shadow:0 8px 25px rgba(0,20,22,.25); border-radius:999px; padding:11px 13px; cursor:pointer; font-size:12px; font-weight:650; }
-        .sdf-language-toggle:hover,.sdf-language-toggle:focus-visible { background:#117166; outline:2px solid #DCC18B; outline-offset:2px; }
-        .sdf-language-panel { position:absolute; right:0; top:calc(100% + 10px); width:240px; max-width:calc(100vw - 30px); padding:17px; background:#FAF7EC; color:#123D3B; border:1px solid #DCCCA9; border-radius:17px; box-shadow:0 16px 48px rgba(0,22,25,.33); }
-        .sdf-language-title { font-size:14px; font-weight:700; margin-bottom:5px; }
-        .sdf-language-note { font-size:11px; color:#576963; line-height:1.5; margin:9px 0 0; }
-        .sdf-gtranslate-wrapper { min-height:40px; }
-        .sdf-gtranslate-wrapper select { width:100%; max-width:100%; min-height:39px; border:1px solid #A4C8BC; border-radius:9px; color:#173F3C; background:#fff; font-size:13px; }
-        @media(max-width:640px) { .sdf-language-float { top:auto; bottom:92px; transform:none; right:12px; } .sdf-language-toggle { padding:11px; } .sdf-language-panel { top:auto; bottom:calc(100% + 9px); } }
+        .sdf-language-navbar-host {position:relative; display:flex; align-items:center; margin-left:12px; margin-right:0; flex-shrink:0;}
+        .sdf-language-nav {position:relative; font-family:inherit; direction:ltr;}
+        .sdf-language-toggle {display:inline-flex; align-items:center; gap:7px; padding:9px 11px; border:1px solid rgba(221,190,137,.55); border-radius:999px; background:rgba(255,255,255,.055); color:#F8F5EA; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;}
+        .sdf-language-toggle:hover,.sdf-language-toggle:focus-visible {background:#11675E; outline:2px solid #DCC18B; outline-offset:2px;}
+        .sdf-language-panel {position:absolute; z-index:110; top:calc(100% + 12px); right:0; width:260px; max-width:calc(100vw - 24px); padding:16px; background:#FAF7EC; color:#123D3B; border:1px solid #DCCCA9; border-radius:15px; box-shadow:0 16px 48px rgba(0,22,25,.33); direction:ltr;}
+        .sdf-language-title {font-size:14px; font-weight:700; margin-bottom:8px;}
+        .sdf-language-note {font-size:11px; color:#576963; line-height:1.5; margin:9px 0 0;}
+        .sdf-gtranslate-wrapper {min-height:40px;}
+        .sdf-gtranslate-wrapper select {width:100%; max-width:100%; min-height:39px; border:1px solid #A4C8BC; border-radius:9px; color:#173F3C; background:#fff; font-size:13px;}
+        @media(max-width:1023px){.sdf-language-navbar-host {margin-left:9px; margin-right:0;}.sdf-language-toggle {padding:8px 10px;}.sdf-language-panel {right:-45px;}}
+        @media(max-width:380px){.sdf-language-toggle span{display:none}.sdf-language-panel{right:-45px}}
       `}</style>
-      <button
-        className="sdf-language-toggle"
-        type="button"
-        onClick={() => setIsOpen(current => !current)}
-        aria-expanded={isOpen}
-        aria-controls="sdf-language-panel"
-        aria-label={isOpen ? 'Close language selection' : 'Choose website language'}
-      >
-        {isOpen ? <X size={18} /> : <Globe2 size={18} />}
-        <span>{isOpen ? 'Close' : 'Language'}</span>
+      <button className="sdf-language-toggle" type="button"
+        onClick={() => setIsOpen(open => !open)} aria-expanded={isOpen}
+        aria-controls="sdf-language-panel" aria-label="Choose website language">
+        {isOpen ? <X size={16}/> : <Globe2 size={16}/>} <span>Language</span>
       </button>
-      <section id="sdf-language-panel" className="sdf-language-panel" style={{ display: isOpen ? 'block' : 'none' }} aria-label="Translate website">
+      <section id="sdf-language-panel" className="sdf-language-panel"
+        style={{display:isOpen?'block':'none'}} aria-label="Translate website">
         <div className="sdf-language-title"><Languages size={16} style={{display:'inline-block',verticalAlign:'-3px',marginRight:7}}/>Select Language</div>
         <div className="sdf-gtranslate-wrapper" />
-        {scriptFailed && <p role="alert" className="sdf-language-note">Translation service could not load. Please check your connection or retry later.</p>}
-        <p className="sdf-language-note">Automatic translation • 12 languages. Please refer to the English version for official donation and legal details.</p>
+        {scriptFailed && <p role="alert" className="sdf-language-note">Translation service could not load. Please check your connection.</p>}
+        <p className="sdf-language-note">Automatic translation · 12 languages. Refer to the original English text for official donation and legal details.</p>
       </section>
-    </div>
+    </div>, target
   );
 };
